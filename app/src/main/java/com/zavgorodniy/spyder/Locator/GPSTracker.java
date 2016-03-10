@@ -42,6 +42,11 @@ public class GPSTracker extends Service implements LocationListener {
         getLocation();
     }
 
+    /**
+     * Function to get location object by GPS or network methods
+     * checks GPS or network connection
+     * @return location object that contains coordinates
+     */
     public Location getLocation() {
         try {
             locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
@@ -54,7 +59,6 @@ public class GPSTracker extends Service implements LocationListener {
 
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // no connection is enabled
-                Toast.makeText(mContext, "Please, enable GPS or check connection to network", Toast.LENGTH_LONG).show();
             } else {
                 this.canGetLocation = true;
                 // First get location from Network Provider
