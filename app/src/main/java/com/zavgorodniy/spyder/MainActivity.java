@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +18,11 @@ public class MainActivity extends Activity {
     Button showLocation;
     TextView tvCurrentLocation;
     TextView tvPreviousLocation;
+
+    String latitude;
+    String longitude;
+    String telNumber;
+    String srt;
 
     GPSTracker gps;
     Connection conn;
@@ -43,19 +49,34 @@ public class MainActivity extends Activity {
                 // check if GPS enabled
                 if(gps.canGetLocation()){
 
-                    String latitude = String.valueOf(gps.getLatitude());
-                    String longitude = String.valueOf(gps.getLongitude());
-                    String telNumber = phoneNumber();
-
-                    conn.sendData(telNumber, latitude, longitude);
+                    latitude = String.valueOf(gps.getLatitude());
+                    longitude = String.valueOf(gps.getLongitude());
+                    telNumber = phoneNumber();
 
                     String coordinates = tvCurrentLocation.getText().toString();
                     tvPreviousLocation.setText(coordinates);
                     coordinates = "Lat: " + latitude + "\nLong: " + longitude;
                     tvCurrentLocation.setText(coordinates);
 
+                    srt = latitude + ", " + longitude + ", " + telNumber;
                     Toast.makeText(getApplicationContext(), "Your Location is - \n" + coordinates +
                             "\n" + telNumber, Toast.LENGTH_LONG).show();
+
+                    if (!telNumber.equals("")){
+                        Thread thread = new Thread(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        conn.sendData(telNumber, latitude, longitude);
+                                    }
+                                }
+                        );
+                        thread.start();
+
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Put your sim card", Toast.LENGTH_LONG).show();
+
+                    }
                 } else {
                     // can't get location
                     // GPS or Network is not enabled message
@@ -71,4 +92,3 @@ public class MainActivity extends Activity {
         return mPhoneNumber;
     }
 }
-

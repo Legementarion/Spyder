@@ -1,5 +1,7 @@
 package com.zavgorodniy.spyder.connection;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,7 +16,7 @@ import java.net.URL;
  */
 public class Connection {
 
-    private String stringUrl = "http://google.com";
+    private String stringUrl = "http://195.140.162.44:8080/spyder/records";
 
     private JSONObject buildJSON(String imei, String latitude, String longitude) {
         JSONObject json = new JSONObject();
@@ -41,6 +43,7 @@ public class Connection {
             out = new DataOutputStream(connection.getOutputStream());
             out.write(json.toString().getBytes());
             out.flush();
+            Log.d("sended data: ", json.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
