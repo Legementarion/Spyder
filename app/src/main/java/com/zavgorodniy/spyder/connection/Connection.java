@@ -39,6 +39,7 @@ public class Connection {
             url = new URL(stringUrl);
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
             out = new DataOutputStream(connection.getOutputStream());
             out.write(json.toString().getBytes());
@@ -54,6 +55,5 @@ public class Connection {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
