@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Spyder</string>
+    <string name="hint_activation">380*********</string>
+    <string name="enter_your_number">Enter Your Number</string>
 </resources>
