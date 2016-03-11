@@ -44,7 +44,7 @@ public class Connection {
             out = new DataOutputStream(connection.getOutputStream());
             out.write(json.toString().getBytes());
             out.flush();
-            Log.d("sended data: ", json.toString());
+            Log.d("connection to server: ", connection.getResponseMessage());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
