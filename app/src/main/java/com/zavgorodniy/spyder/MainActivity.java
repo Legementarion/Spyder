@@ -16,6 +16,7 @@ import com.zavgorodniy.spyder.connection.Connection;
 public class MainActivity extends Activity {
 
     Button showLocation;
+    Button stopGPS;
     TextView tvCurrentLocation;
     TextView tvPreviousLocation;
 
@@ -33,22 +34,22 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         showLocation = (Button) findViewById(R.id.bt_get_coordinates);
+        stopGPS = (Button) findViewById(R.id.bt_stop_gps);
         tvCurrentLocation = (TextView) findViewById(R.id.tv_coordinates);
         tvPreviousLocation = (TextView) findViewById(R.id.tv_prev_coordinates);
 
+        gps = GPSTracker.getInstance(this);
         // show location button click event
         showLocation.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                // create class object
-                gps = new GPSTracker(MainActivity.this);
-                conn = new Connection();
 
+                conn = new Connection();
+                gps.getLocation();
 
                 // check if GPS enabled
                 if(gps.canGetLocation()){
-
                     latitude = String.valueOf(gps.getLatitude());
                     longitude = String.valueOf(gps.getLongitude());
                     telNumber = phoneNumber();
@@ -75,13 +76,20 @@ public class MainActivity extends Activity {
 
                     }else{
                         Toast.makeText(getApplicationContext(), "Put your sim card", Toast.LENGTH_LONG).show();
-
                     }
                 } else {
                     // can't get location
                     // GPS or Network is not enabled message
                     Toast.makeText(getApplicationContext(), "Please, enable GPS or check connection to network", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        stopGPS.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                gps.stopUsingGPS();
             }
         });
     }
