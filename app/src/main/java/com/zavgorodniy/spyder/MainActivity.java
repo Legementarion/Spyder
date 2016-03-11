@@ -20,7 +20,7 @@ import com.zavgorodniy.spyder.connection.Connection;
 public class MainActivity extends Activity {
 
     Button showLocation;
-    Button stopGPS;
+    Button changeServer;
     TextView tvCurrentLocation;
     TextView tvPreviousLocation;
 
@@ -37,12 +37,38 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         showLocation = (Button) findViewById(R.id.bt_get_coordinates);
-        stopGPS = (Button) findViewById(R.id.bt_stop_gps);
+        changeServer = (Button) findViewById(R.id.bt_change_srv);
         tvCurrentLocation = (TextView) findViewById(R.id.tv_coordinates);
         tvPreviousLocation = (TextView) findViewById(R.id.tv_prev_coordinates);
         telNumber = "";
+        conn = new Connection();
         gps = GPSTracker.getInstance(this);
         // show location button click event
+        changeServer.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                LayoutInflater inflater = getLayoutInflater();
+
+                final View dialogView = inflater.inflate(R.layout.server_dialog, null);
+                builder.setView(dialogView)
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                EditText valueIp = (EditText) dialogView.findViewById(R.id.server_ip);
+                                EditText valuePort = (EditText) dialogView.findViewById(R.id.server_port);
+                                if(conn.setUrl(valueIp.getText().toString(),valuePort.getText().toString()) !=1){
+                                    Toast.makeText(getApplicationContext(), "Wrong ip or port! Please try again!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+
+            }
+        });
         showLocation.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -115,7 +141,7 @@ public class MainActivity extends Activity {
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        EditText valueView = (EditText) dialogView.findViewById(R.id.editText); //here
+                        EditText valueView = (EditText) dialogView.findViewById(R.id.editText);
                         if (valueView == null) Log.d("AA", "NULL");
                         else {
                             String value = valueView.getText().toString();
@@ -130,10 +156,4 @@ public class MainActivity extends Activity {
         AlertDialog alert = builder.create();
         alert.show();
     }
-
-    public void serverChange_btn(){
-
-
-    }
-
 }

@@ -2,4 +2,6 @@
     <string name="app_name">Spyder</string>
     <string name="hint_activation">380*********</string>
     <string name="enter_your_number">Enter Your Number</string>
+    <string name="enter_server_ip">Enter server ip</string>
+    <string name="enter_server_port">Enter server port</string>
 </resources>

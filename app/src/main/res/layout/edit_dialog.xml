@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText"
         android:hint="@string/hint_activation"
-        android:inputType="number"
+        android:inputType="phone"
         android:singleLine="true"
         android:textSize="16sp"
         />
