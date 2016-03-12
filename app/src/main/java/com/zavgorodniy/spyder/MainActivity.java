@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
         conn = new Connection();
         gps = GPSTracker.getInstance(this);
         // show location button click event
-        changeServer.setOnClickListener(new View.OnClickListener() {
+        changeServer.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -59,8 +59,8 @@ public class MainActivity extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 EditText valueIp = (EditText) dialogView.findViewById(R.id.server_ip);
                                 EditText valuePort = (EditText) dialogView.findViewById(R.id.server_port);
-                                if (conn.setUrl(valueIp.getText().toString(), valuePort.getText().toString()) != 1) {
-                                    Toast.makeText(getApplicationContext(), "Wrong ip or port! Please try again!", Toast.LENGTH_SHORT).show();
+                                if(conn.setUrl(valueIp.getText().toString(),valuePort.getText().toString()) !=1){
+                                    Toast.makeText(getApplicationContext(), R.string.Wrong_Ip_Port, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -114,13 +114,13 @@ public class MainActivity extends Activity {
                 thread.start();
 
             } else {
-                Toast.makeText(getApplicationContext(), "Put your sim card and restart! Or enter another phone number", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.sim_card_error, Toast.LENGTH_LONG).show();
                 phoneNumberInput();
             }
         } else {
             // can't get location
             // GPS or Network is not enabled message
-            Toast.makeText(getApplicationContext(), "Please, enable GPS or check connection to network", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.gps_connect_error, Toast.LENGTH_LONG).show();
         }
     }
 

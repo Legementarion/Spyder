@@ -4,4 +4,7 @@
     <string name="enter_your_number">Enter Your Number</string>
     <string name="enter_server_ip">Enter server ip</string>
     <string name="enter_server_port">Enter server port</string>
+    <string name="Wrong_Ip_Port">Wrong ip or port! Please try again!</string>
+    <string name="sim_card_error">Put your sim card and restart! Or enter another phone number</string>
+    <string name="gps_connect_error">Please, enable GPS or check connection to network</string>
 </resources>
