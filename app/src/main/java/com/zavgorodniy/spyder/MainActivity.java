@@ -53,12 +53,18 @@ public class MainActivity extends Activity {
                 LayoutInflater inflater = getLayoutInflater();
 
                 final View dialogView = inflater.inflate(R.layout.server_dialog, null);
+                EditText valueIp = (EditText) dialogView.findViewById(R.id.server_ip);
+                EditText valuePort = (EditText) dialogView.findViewById(R.id.server_port);
+                valueIp.setText(conn.getStringIp());
+                valuePort.setText(conn.getStringPort());
                 builder.setView(dialogView)
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
                                 EditText valueIp = (EditText) dialogView.findViewById(R.id.server_ip);
                                 EditText valuePort = (EditText) dialogView.findViewById(R.id.server_port);
+                                valueIp.setText(conn.getStringIp());
+                                valuePort.setText(conn.getStringPort());
                                 if(conn.setUrl(valueIp.getText().toString(),valuePort.getText().toString()) !=1){
                                     Toast.makeText(getApplicationContext(), R.string.Wrong_Ip_Port, Toast.LENGTH_SHORT).show();
                                 }

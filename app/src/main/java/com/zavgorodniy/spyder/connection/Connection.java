@@ -41,6 +41,8 @@ public class Connection {
     public Connection() {
         validator = new Validator();
         stringHttp = "http://";
+        stringIp = "192.168.88.18";
+        stringPort = "8080";
         stringUrlPath = "/spyder/records";
     }
 
@@ -74,8 +76,8 @@ public class Connection {
     public int setUrl(String ip, String port) {
         int result = ERROR;
         if (validator.validateIp(ip) && validator.validatePort(port)) {
-            stringIp = ip;
-            stringPort = port;
+            setStringIp(ip);
+            setStringPort(port);
             result = SUCCESS;
         }
 
@@ -91,13 +93,13 @@ public class Connection {
      */
     public int sendData(String phone, String latitude, String longitude) {
         int result = ERROR;
-        if (stringIp != null && stringPort != null){
+        if (getStringIp() != null && getStringPort() != null){
             JSONObject json = buildJSON(phone, latitude, longitude);
             URL url;
             HttpURLConnection connection;
             DataOutputStream out;
             try {
-                url = new URL(stringHttp + stringIp + ":" + stringPort + stringUrlPath);
+                url = new URL(stringHttp + getStringIp() + ":" + getStringPort() + stringUrlPath);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
@@ -107,6 +109,7 @@ public class Connection {
                 out.flush();
                 out.close();
                 result = SUCCESS;
+                System.out.println(connection.getResponseMessage());
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -115,5 +118,21 @@ public class Connection {
         }
 
         return result;
+    }
+
+    public String getStringPort() {
+        return stringPort;
+    }
+
+    public void setStringPort(String stringPort) {
+        this.stringPort = stringPort;
+    }
+
+    public String getStringIp() {
+        return stringIp;
+    }
+
+    public void setStringIp(String stringIp) {
+        this.stringIp = stringIp;
     }
 }
